@@ -4,7 +4,6 @@ import vertexShader from "../shaders/water.vs";
 import fragmentShader from "../shaders/water.fs";
 
 export class Water extends THREE.Mesh {
-
   material: THREE.ShaderMaterial;
 
   constructor(options: any) {
@@ -24,7 +23,7 @@ export class Water extends THREE.Mesh {
         uAmplitudeFactor: { value: 0.8 },
         uFrequency: { value: 0.5 },
         uFrequencyFactor: { value: 1.2 },
-        uIterations: { value: 5.0 },
+        uIterations: { value: 12 },
         uRandom: { value: Math.random() },
       },
       transparent: true,
@@ -35,9 +34,8 @@ export class Water extends THREE.Mesh {
 
     this.material = material;
     this.geometry = geometry;
-		this.rotation.x = -Math.PI / 2;
+    this.rotation.x = -Math.PI / 2;
     this.setupGUI(options.gui);
-
   }
 
   private setupGUI(gui: GUI) {
@@ -62,6 +60,7 @@ export class Water extends THREE.Mesh {
       .name("Frequency Factor");
     waterFolder
       .add(this.material.uniforms.uIterations, "value", 1, 32)
+      .step(1)
       .name("Iterations");
     waterFolder.open();
   }

@@ -18,12 +18,12 @@ declare global {
   interface Window {
     Three: typeof Three;
     renderer: WebGLRenderer;
+    camera: Three.Camera;
   }
 }
 
-window.Three = Three;
-
 const scene = new Scene();
+const clock = new Clock();
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 
 const rect = canvas.getBoundingClientRect();
@@ -31,6 +31,8 @@ const width = rect.width;
 const height = rect.height;
 
 const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
+camera.position.set(-80, 40, 30);
+
 const renderer = new WebGLRenderer({
   canvas,
   context: canvas.getContext("webgl2")!,
@@ -39,27 +41,25 @@ const renderer = new WebGLRenderer({
 renderer.setSize(width, height);
 renderer.setPixelRatio(window.devicePixelRatio);
 
-const clock = new Clock();
-
+window.Three = Three;
+window.camera = camera;
 window.renderer = renderer;
 
 const cubeTextureLoader = new Three.CubeTextureLoader();
 
 const environmentMap = cubeTextureLoader.load([
-  'posx.jpg', // positive x
-  'negx.jpg', // negative x
-  'posy.jpg', // positive y
-  'negy.jpg', // negative y
-  'posz.jpg', // positive z
-  'negz.jpg'  // negative z
+  "posx.jpg", // positive x
+  "negx.jpg", // negative x
+  "posy.jpg", // positive y
+  "negy.jpg", // negative y
+  "posz.jpg", // positive z
+  "negz.jpg", // negative z
 ]);
 
 scene.background = environmentMap;
 scene.environment = environmentMap;
 
-
-
-const poolTexture = new TextureLoader().load("/ocean_floor.png");
+const poolTexture = new TextureLoader().load("/threejs-water/ocean_floor.png");
 const ground = new Ground({
   texture: poolTexture,
 });
@@ -76,20 +76,15 @@ scene.add(water);
 const worldAxesHelper = new AxesHelper(200);
 scene.add(worldAxesHelper);
 
-camera.position.set(0, 100, 100);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.screenSpacePanning = false;
 
-
-
 function handleResize() {
-  console.log("window resize");
-  const rect = canvas.getBoundingClientRect();
+  const rect = document.body.getBoundingClientRect();
   const width = rect.width;
   const height = rect.height;
-
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 
@@ -107,7 +102,7 @@ function animate() {
   const time = clock.getElapsedTime();
   ground.update(time);
   water.update(time);
-  controls.update();
+  controls.update(time);
 
   renderer.render(scene, camera);
 }
