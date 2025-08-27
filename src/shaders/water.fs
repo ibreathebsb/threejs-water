@@ -17,7 +17,7 @@ void main() {
   vec3 color = uColor;
   vec3 n = normalize(gl_FrontFacing ? vNormal : -vNormal);
   vec3 viewDir = normalize(cameraPosition - vPosition);
-
+  // adjust brightness according to height
   vec3 baseColor = color * clamp((vDz + uAmplitude) / (2.0 * uAmplitude), 0.5, 1.0);
   // vec3 baseColor = color;
   vec3 reflectDir = reflect(-viewDir, n);
@@ -25,6 +25,18 @@ void main() {
   vec3 reflectedColor = texture(uEnvironmentMap, reflectDir).xyz;
   float F0 = 0.04;
   float fresnel = F0 + (1.0 - F0) * pow(1.0 - dot(n, viewDir), 5.0);
+  
+  // for sharp edges could, reflected dir go towards ground
+  // if (reflectDir.y < 0.0) {
+  //   fresnel = 0.0;
+  // }
+  // for back face ignore set fresnel to 0
+  // if (!gl_FrontFacing) {
+  //   fresnel = 0.0;
+  // }
+  // TODO: fix hardcoded y,maybe calculate in view space
+  fresnel = fresnel * step(0.0, reflectDir.y) * float(gl_FrontFacing);
+
   vec3 finalColor = mix(baseColor, reflectedColor, fresnel);
   gl_FragColor = vec4(finalColor, uOpacity);
   // gl_FragColor = vec4(color, uOpacity);

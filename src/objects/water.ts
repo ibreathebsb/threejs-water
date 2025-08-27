@@ -28,7 +28,7 @@ export class Water extends THREE.Mesh {
       },
       transparent: true,
       depthTest: true,
-      depthWrite: true,
+      depthWrite: false,
       side: THREE.DoubleSide,
     });
 
