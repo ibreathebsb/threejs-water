@@ -3,6 +3,9 @@ import vertexShader from "../shaders/ground.vs";
 import fragmentShader from "../shaders/ground.fs";
 
 export class Ground extends Three.Mesh {
+  
+  material: Three.ShaderMaterial;
+
   constructor(options: any) {
     super();
     this.material = new Three.ShaderMaterial({

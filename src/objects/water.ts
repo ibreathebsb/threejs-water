@@ -4,7 +4,10 @@ import vertexShader from "../shaders/water.vs";
 import fragmentShader from "../shaders/water.fs";
 
 export class Water extends THREE.Mesh {
-  constructor(options) {
+
+  material: THREE.ShaderMaterial;
+
+  constructor(options: any) {
     super();
     const geometry = new THREE.PlaneGeometry(100, 100, 512, 512);
     const material = new THREE.ShaderMaterial({
