@@ -7,6 +7,9 @@ uniform float uAmplitude;
 uniform float uAmplitudeFactor;
 uniform float uFrequency;
 uniform float uFrequencyFactor;
+uniform float uLambda;
+uniform float uLambdaFactor;
+
 uniform int uIterations;
 uniform float uRandom;
 
@@ -68,15 +71,15 @@ void main() {
   float a = uAmplitude;
   float w = uFrequency;
 
-  float lambda = 40.0;
+  float lambda = uLambda;
 
   for (int i = 0; i < uIterations; i++) {
-    float angle = snoise(vec2(float(i) * 0.1, uRandom)) * 2.0 * PI;
+    // generate a random direction for the wave
+    float angle = snoise(vec2(float(i), uRandom)) * 2.0 * PI;
     float kx = cos(angle);
     float ky = sin(angle);
 
     float k = 2.0 * PI / lambda;
-    // float k = (w * w) / 9.8;
 
     kx *= k;
     ky *= k;
@@ -89,7 +92,7 @@ void main() {
     dzdy += a * ky * cosPhase;
     a = a * uAmplitudeFactor;
     w = w * uFrequencyFactor;
-    lambda *= uAmplitudeFactor;
+    lambda *= uLambdaFactor;
   }
 
   vec3 x = vec3(1, 0, dzdx);

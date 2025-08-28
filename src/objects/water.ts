@@ -19,11 +19,13 @@ export class Water extends THREE.Mesh {
         uColor: { value: new THREE.Color(0x006994) },
         uOpacity: { value: 0.8 },
         uEnvironmentMap: { value: options.environmentMap },
-        uAmplitude: { value: 5.0 },
+        uAmplitude: { value: 3.0 },
         uAmplitudeFactor: { value: 0.8 },
+        uLambda: { value: 40.0 },
+        uLambdaFactor: { value: 0.8 },
         uFrequency: { value: 0.5 },
         uFrequencyFactor: { value: 1.2 },
-        uIterations: { value: 12 },
+        uIterations: { value: 18 },
         uRandom: { value: Math.random() },
       },
       transparent: true,
@@ -52,6 +54,12 @@ export class Water extends THREE.Mesh {
     waterFolder
       .add(this.material.uniforms.uAmplitudeFactor, "value", 0.1, 1.0)
       .name("Amplitude Factor");
+    waterFolder
+      .add(this.material.uniforms.uLambda, "value", 1.0, 100.0)
+      .name("Lambda");
+    waterFolder
+      .add(this.material.uniforms.uLambdaFactor, "value", 0.1, 1.0)
+      .name("Lambda Factor");
     waterFolder
       .add(this.material.uniforms.uFrequency, "value", 0.01, 5.0)
       .name("Frequency");
