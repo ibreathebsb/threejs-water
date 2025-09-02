@@ -3,7 +3,7 @@ import {
   Scene,
   PerspectiveCamera,
   WebGLRenderer,
-  AxesHelper,
+  // AxesHelper,
   TextureLoader,
   Clock,
 } from "three";
