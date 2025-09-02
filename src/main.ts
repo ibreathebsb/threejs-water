@@ -73,8 +73,8 @@ const gui = new GUI();
 const water = new Water({ environmentMap, gui });
 scene.add(water);
 
-const worldAxesHelper = new AxesHelper(200);
-scene.add(worldAxesHelper);
+// const worldAxesHelper = new AxesHelper(200);
+// scene.add(worldAxesHelper);
 
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
